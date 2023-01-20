@@ -1,0 +1,27 @@
+(deftemplate Claimant
+  (slot homeless (type SYMBOL) (allowed-values yes no))
+  (slot unemployed (type SYMBOL) (allowed-values yes no))
+  (slot nosavings (type SYMBOL) (allowed-values yes no))
+  (slot dependants (type SYMBOL) (allowed-values yes no))
+  (slot disabled (type SYMBOL) (allowed-values yes no))
+)
+
+(deftemplate Benefit
+   (slot benefit (type SYMBOL) (allowed-values level1 level2))
+)
+
+(defrule Level1
+   (Claimant (homeless yes) (unemployed yes) (nosavings no)
+             (dependants yes) (disabled yes))
+   =>
+   (assert (Benefit (benefit level1)))
+   (printout t "You get level 1 benefit support" crlf)
+)
+
+(defrule Level2
+   (Claimant (homeless yes) (unemployed yes) (nosavings no)
+             (dependants no) (disabled no))
+   =>
+   (assert (Benefit (benefit level2)))
+   (printout t "You get level 2 benefit support" crlf)
+)
